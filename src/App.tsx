@@ -1,18 +1,34 @@
-import React from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import React, { useState } from 'react';
+import { BrowserRouter, NavLink, Route, Switch } from 'react-router-dom';
+import FocusScreen from './screens/FocusScreen';
 import ListScreen from './screens/ListScreen';
+import { Task } from './types';
 
 function App() {
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const tasksProps = { tasks, setTasks };
+
   return (
     <BrowserRouter>
+      <nav>
+        <NavLink exact to="/" activeStyle={{ fontWeight: 'bold' }}>
+          List
+        </NavLink>{' '}
+        - {''}
+        <NavLink to="/focus" activeStyle={{ fontWeight: 'bold' }}>
+          Focus
+        </NavLink>
+      </nav>
+      <br />
+
       <Switch>
         <Route exact path="/">
           <div>
-            <ListScreen />
+            <ListScreen {...tasksProps} />
           </div>
         </Route>
         <Route path="/focus">
-          <div>Focus view</div>
+          <FocusScreen {...tasksProps} />
         </Route>
       </Switch>
     </BrowserRouter>
