@@ -6,7 +6,21 @@ import { Task } from './types';
 
 function App() {
   const [tasks, setTasks] = useState<Task[]>([]);
-  const tasksProps = { tasks, setTasks };
+
+  const updateTaskCompletion = (taskId: string, isComplete: boolean) => {
+    setTasks((tasks) =>
+      tasks.map((task) => {
+        if (task.id === taskId) return { ...task, isComplete };
+        return task;
+      })
+    );
+  };
+
+  const tasksApi = {
+    tasks,
+    setTasks,
+    updateTaskCompletion,
+  };
 
   return (
     <BrowserRouter>
@@ -24,11 +38,11 @@ function App() {
       <Switch>
         <Route exact path="/">
           <div>
-            <ListScreen {...tasksProps} />
+            <ListScreen {...tasksApi} />
           </div>
         </Route>
         <Route path="/focus">
-          <FocusScreen {...tasksProps} />
+          <FocusScreen {...tasksApi} />
         </Route>
       </Switch>
     </BrowserRouter>
